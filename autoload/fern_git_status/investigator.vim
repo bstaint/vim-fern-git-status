@@ -64,8 +64,9 @@ endfunction
 
 function! s:prepend_toplevel(toplevel, statuses) abort
   " return map(a:statuses, { _, v -> [a:toplevel . '/' . v[0], v[1]] })
+  let toplevel = has('win32') ? fern#internal#filepath#to_slash(a:toplevel) : a:toplevel
   let Profile = fern#profile#start('fern_git_status#investigator#s:prepend_toplevel')
-  return s:AsyncLambda.map(a:statuses, { v -> [a:toplevel . '/' . v[0], v[1]] })
+  return s:AsyncLambda.map(a:statuses, { v -> [toplevel . '/' . v[0], v[1]] })
        \.finally({ -> Profile() })
 endfunction
 
